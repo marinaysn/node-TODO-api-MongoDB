@@ -21,9 +21,9 @@ MongoClient.connect('mongodb://localhost:27017/testTodoApp', (err, client) => {
     // })
 
     db.collection('Users').insertOne({
-        name: 'Marina',
-        age: 42,
-        location: 'Toronto'
+        name: 'Jane',
+        age: 37,
+        location: 'Richmond Hill'
     }, (err, result) => {
         if (err) {
             return console.log('Unable to create new collection Users', err)
