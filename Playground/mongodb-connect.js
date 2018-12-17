@@ -1,8 +1,9 @@
-const MongoClient = require("mongodb").MongoClient;
+//const MongoClient = require("mongodb").MongoClient;
+const {MongoClient, ObjectID} = require("mongodb"); //destructuring
 
-let user = { name: 'Katty', age: 14, location: "Toronto" };
-let { name } = user;
-console.log(name);
+let obj = new ObjectID();
+console.log(obj);
+
 
 MongoClient.connect(
     "mongodb://localhost:27017/testTodoApp",
@@ -29,21 +30,22 @@ MongoClient.connect(
 
       
       //Users collection
-    // db.collection("Users").insertOne(
-    //   {
-    //     name: "Max",
-    //     age: 19,
-    //     location: "New York"
-    //   },
-    //   (err, result) => {
-    //     if (err) {
-    //       return console.log("Unable to create new collection Users", err);
-    //     }
-    //     console.log(
-    //       JSON.stringify(result.ops[0]._id.getTimestamp(), undefined, 2)
-    //     );
-    //   }
-    // );
+    db.collection("Users").insertOne(
+        {
+            _id: obj,
+        name: "Katty",
+        age: 14,
+        location: "Taxas"
+      },
+      (err, result) => {
+        if (err) {
+          return console.log("Unable to create new collection Users", err);
+        }
+        console.log(
+          JSON.stringify(result.ops[0]._id.getTimestamp(), undefined, 2)
+        );
+      }
+    );
 
     client.close();
   }
