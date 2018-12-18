@@ -19,8 +19,9 @@ let Todo = mongoose.model("Todo", {
 });
 
 let newTodo = new Todo({
-  text: "Cook dinner",
-  completed: false
+  text: "Feed the dog",
+    completed: true,
+  completedAt: 123
 });
 
 newTodo.save().then(
