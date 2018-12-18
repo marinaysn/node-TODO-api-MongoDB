@@ -8,20 +8,26 @@ mongoose.connect(
 
 let Todo = mongoose.model("Todo", {
   text: {
-    type: String
+    type: String,
+    required: [true, "Must enter todo text"],
+    unique: true,
+    minlength: 2,
+    maxlength: 25,
+    trim: true //removes whitespaces
   },
   completed: {
-    type: Boolean
+    type: Boolean,
+    default: false
   },
   completedAt: {
-    type: Number
+      type: Number,
+      default: null
   }
 });
 
 let newTodo = new Todo({
-  text: "Feed the dog",
-    completed: true,
-  completedAt: 123
+  text: "Send Letter to Dad",
+  completedAt: 1955
 });
 
 newTodo.save().then(
