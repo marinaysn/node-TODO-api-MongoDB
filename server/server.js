@@ -6,24 +6,24 @@ mongoose.connect(
   { useNewUrlParser: true }
 );
 
-// let Todo = mongoose.model("Todo", {
-//   text: {
-//     type: String,
-//     required: [true, "Must enter todo text"],
-//     unique: true,
-//     minlength: 2,
-//     maxlength: 25,
-//     trim: true //removes whitespaces
-//   },
-//   completed: {
-//     type: Boolean,
-//     default: false
-//   },
-//   completedAt: {
-//       type: Number,
-//       default: null
-//   }
-// });
+let Todo = mongoose.model("Todo", {
+  text: {
+    type: String,
+    required: [true, "Must enter todo text"],
+    unique: true,
+    minlength: 2,
+    maxlength: 25,
+    trim: true //removes whitespaces
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  completedAt: {
+      type: Number,
+      default: null
+  }
+});
 
 // let newTodo = new Todo({
 //   text: "Send Letter to Dad",
@@ -64,16 +64,16 @@ let User = mongoose.model("User", {
 });
 
 let newUser = new User({
-    name: 'Paul',
-    age: 42,
-    email: 'paul@ny.com',
+    name: 'John',
+    age: 49,
+    email: 'jj@ny.com',
     gender: 'male'
 });
 
 newUser.save().then(doc => {
-    console.log(`Saved user`);
+    console.log(`Saved user`, doc);
 }, (e) => {
-    console.log(`Unable to save user`);
+    console.log(`Unable to save user`, e);
 })
 
 //mongoose.close();
