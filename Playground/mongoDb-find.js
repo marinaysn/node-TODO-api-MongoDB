@@ -60,7 +60,7 @@ MongoClient.connect(
       .find({ location: 'New York' })
       .toArray()
       .then(docs => {
-        console.log("Show user Marina");
+        console.log("Show user from New York");
         console.log(JSON.stringify(docs, undefined, 2));
       });
 
