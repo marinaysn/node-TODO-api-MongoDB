@@ -28,6 +28,7 @@ let Todo = mongoose.model("Todo", {
 // newTodo.save().then(
 //   doc => {
 //     console.log("Save todo", doc);
+//     mongoose.connection.close(); //close connection after save
 //   },
 //   e => {
 //     console.log("Unable to save todo");
