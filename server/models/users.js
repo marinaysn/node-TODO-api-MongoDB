@@ -1,4 +1,4 @@
-
+const mongoose = require('mongoose');
 
 let User = mongoose.model("User", {
     name: {
@@ -22,4 +22,21 @@ let User = mongoose.model("User", {
     gender: {
       type: String
     }
-  });
+});
+  
+
+
+// let newUser = new User({
+//     name: 'John',
+//     age: 49,
+//     email: 'jj@ny.com',
+//     gender: 'male'
+// });
+
+// newUser.save().then(doc => {
+//     console.log(`Saved user`, doc);
+// }, (e) => {
+//     console.log(`Unable to save user`, e);
+// })
+
+module.exports = { User }; 

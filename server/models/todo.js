@@ -1,4 +1,4 @@
-
+const mongoose = require('mongoose');
 
 let Todo = mongoose.model("Todo", {
     text: {
@@ -17,4 +17,22 @@ let Todo = mongoose.model("Todo", {
         type: Number,
         default: null
     }
-  });
+});
+  
+
+// let newTodo = new Todo({
+//   text: "Send Letter to Dad",
+//   completedAt: 1955
+// });
+
+// newTodo.save().then(
+//   doc => {
+//     console.log("Save todo", doc);
+//   },
+//   e => {
+//     console.log("Unable to save todo");
+//   }
+// );
+
+
+module.exports = { Todo };
