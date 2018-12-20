@@ -27,10 +27,10 @@ let User = mongoose.model("User", {
 
 
 // let newUser = new User({
-//     name: 'John',
-//     age: 49,
-//     email: 'jj@ny.com',
-//     gender: 'male'
+//     name: 'Darya Popova',
+//     age: 19,
+//     email: 'dpopova@ny.com',
+//     gender: 'female'
 // });
 
 // newUser.save().then(doc => {
