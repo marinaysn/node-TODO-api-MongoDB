@@ -26,17 +26,18 @@ let User = mongoose.model("User", {
   
 
 
-let newUser = new User({
-    name: 'John Smith',
-    email: 'john@ny.com',
-    gender: 'male'
-});
+// let newUser = new User({
+//     name: 'Peppa L. Lange',
+//     age: 27,
+//     email: 'peppa@ny.com',
+//     gender: 'female'
+// });
 
-newUser.save().then(doc => {
-    console.log(`Saved user`, doc);
-    mongoose.connection.close(); //close connection after save
-}, (e) => {
-    console.log(`Unable to save user`, e);
-})
+// newUser.save().then(doc => {
+//     console.log(`Saved user`, doc);
+//     mongoose.connection.close(); //close connection after save
+// }, (e) => {
+//     console.log(`Unable to save user`, e);
+// })
 
 module.exports = { User }; 
