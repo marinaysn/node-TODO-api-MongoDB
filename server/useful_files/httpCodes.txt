@@ -1,8 +1,11 @@
 1×× Informational
+
 100 Continue
 101 Switching Protocols
 102 Processing
+
 2×× Success
+
 200 OK
 201 Created
 202 Accepted
@@ -13,7 +16,9 @@
 207 Multi-Status
 208 Already Reported
 226 IM Used
+
 3×× Redirection
+
 300 Multiple Choices
 301 Moved Permanently
 302 Found
@@ -22,7 +27,9 @@
 305 Use Proxy
 307 Temporary Redirect
 308 Permanent Redirect
+
 4×× Client Error
+
 400 Bad Request
 401 Unauthorized
 402 Payment Required
