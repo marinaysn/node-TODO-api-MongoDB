@@ -1,0 +1,188 @@
+Quickstart Mongoose Guide that will get you up to speed in no time
+Go to the profile of Adrian Hajdin
+
+Dec 15, 2018
+
+https://mongoosejs.com/
+Who is this article for?
+This article is for everyone who already has some knowledge in mongoose.js but wants to expand it. You can also use this article as a reference to all the important methods in mongoose.js.
+
+Mongoose — Brief Introduction
+Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It manages relationships between data, provides schema validation, and is used to translate between objects in code and the representation of those objects in MongoDB.
+
+General terms that are going to be used in this article:
+Database — Can contain one or more collections.
+Collection — Can contain one or more documents.
+Document — Key/Value pair list or array of nested documents.
+Schema — Specific data structure of a document.
+Model — Constructor that takes a specific schema and create an instance of a document. Models are responsible for creating and reading documents.
+
+
+MongoDB Collection consists of one or more documents.
+Schema and Model are somewhat similar, but there is an underlying difference: Schema defines the structure of the document and Model is responsible for creating and reading documents from MongoDB Database.
+
+All of that can be summarized with one sentence:
+Each Schema maps to a Collection and defines the shape of the documents.
+
+Quickstart guide
+Install mongoose:
+$ npm install mongoose
+Require mongoose:
+const mongoose = require('mongoose');
+Connect to MongoDB:
+mongoose.connect('mongodb://localhost:27017/my_database');
+Define a Schema and create a Model:
+const { Schema } = mongoose;
+const personSchema = new Schema({
+  name: String,
+  age: Number,
+});
+const Person = mongoose.model('Person', personSchema);
+Instantiate and save:
+const person = new Person({ name: ‘John', age: 18 });
+person.save((error) => {
+  if (error) {
+    return console.log(`Error has occurred: ${error}`);
+  }
+  console.log('Document is successfully saved.');
+});
+Find the documents:
+Person.find({}, function (error, documents) {
+  console.log(documents);
+});
+That’s it! We’ve successfully set up a simple collection that includes a person.
+
+Diving deeper
+Now that we’ve covered a quick way to get started with setting up mongoose, defining schemas, models and instantiating them, we can start covering everything in more detail.
+
+Schema Types
+You can think of a Mongoose schema as the configuration object for a Mongoose model. A SchemaType is then a configuration object for an individual property.
+
+The permitted SchemaTypes are:
+String, Number, Date, Boolean, ObjectId, Array…
+
+We can add additional properties for schema types depending on the type:
+
+Additional properties for Strings:
+Modifiers (change a value before saving to the database):
+lowercase: boolean, lowercases a string before saving it to the database.
+uppercase: boolean, uppercases a string before saving it to the database.
+trim: boolean, trims a string before saving it to the database.
+
+Validators (check whether value is valid before saving to the database): match: RegExp, creates a validator that checks if the value matches regExp.
+enum: Array, creates a validator that checks if the value is in the given array.
+minlength: Number, creates a validator that checks if the value length is not less than the given number.
+maxlength: Number, creates a validator that checks if the value length is not greater than the given number.
+
+Some of the additional string properties in action:
+
+const person = new Person({
+  userName: {
+    type: String,
+    lowercase: true,
+    trim: true,
+    minLength: 6,
+    maxLength: 12, 
+  }
+});
+Additional properties for Numbers:
+Validators (check whether value is valid before saving to the database): min: Number, creates a validator that checks if the value is greater than or equal to the given minimum. 
+max: Number, creates a validator that checks if the value is less than or equal to the given maximum.
+
+Some of the additional number properties in action:
+
+const person = new Person({
+  age: {
+    type: Number,
+    min: 18,
+    max: 100,
+  }
+});
+Additional properties for Date:
+Validators (check whether value is valid before saving to the database): min: Number, creates a validator that checks if the date is greater than or equal to the given minimum date. 
+max: Number, creates a validator that checks if the date is less than or equal to the given date.
+
+Validation
+Validation is defined in the SchemaType.
+Mongoose has several built-in validators that we’re familiar from the section above: Strings have enum, match, minLength and maxLength validators and Numbers have min and max validators. There is also a required validator that simply validates that the property cannot be empty.
+
+Lets present some of the validators in action:
+const breakfastSchema = new Schema({
+  eggs: {
+    type: Number,
+    min: [6, 'Too few eggs’],
+    max: 12
+  },
+  bacon: {
+    type: Number,
+    required: [true, 'Why no bacon?’]
+  },
+  drink: {
+    type: String,
+    enum: [’Coffee’, 'Tea’],
+    required: function() {
+      return this.bacon > 3;
+    }
+  }
+});
+const Breakfast = db.model('Breakfast', breakfastSchema);
+As you can see, we can also provide error messages if validator return false. 
+If eggs property is less than or equal to 6, the output will be ‘Too few eggs’.
+
+Queries
+Mongoose models provide several helper functions for CRUD operations.
+
+Let’s create a Person model and play with CRUD operations that it has.
+
+const Person = mongoose.model(’Person’, personSchema);
+Create Methods:
+Mode.save() — Shortcut for saving one or more documents to the database:
+
+Person.create({ name: 'John' }, (error, john) => {
+  if(error){
+    return console.log(error);
+  }
+ 
+  console.log(john);
+});
+Read Methods:
+Model.find() — Finds all documents that match given query:
+
+Person.find({ name: 'John', age: 18 }, (error, result) => {
+  if(error) {
+    return console.log(`Error has occurred: ${error}`);
+  }
+  console.log(result);
+})
+Model.findById() — Finds a single document by its id:
+
+Person.findById(id, (error, person) => {
+  // Code
+});
+Model.findOne()
+
+Person.findOne({ name: 'John' }, (error, person) {
+  // Code
+});
+Update Methods:
+Model.updateMany() — Update all documents that match criteria.
+
+Person.updateMany({ name: 'John' }, { name: 'Jason' }, (err) => {});
+Model.updateOne() — Update only the first document that matches criteria.
+
+Person.updateOne({ name: 'John' }, { name: 'Jason' }, (err) => {});
+Delete Methods:
+Model.deleteMany() — Deletes all of the documents that match conditions from the collection.
+
+Person.deleteMany({ name: 'John', age: { $gte: 18 } }, (err) => {});
+Model.deleteOne() — Deletes the first document that matches conditions from the collection.
+
+Person.deleteOne({ name: 'John' }, (err) => {});
+That’s it!
+In this Mongoose crash course we’ve covered: Explaining of core mongoose parts, Mongoose Quickstart Guide, SchemaTypes, Validation and Queries.
+
+Thanks for sticking till the end! all feedback is greatly appreciated, if you find any mistakes or feel like I could add something feel free to let me now in the comments. If you liked the crash course leave some claps!
+
+If you found this article useful, follow my medium account because I will be creating content regarding MongoDB, Express.js and Node.js very soon!
+
+Also check out my Series of Explained Exercism Solutions. :)
