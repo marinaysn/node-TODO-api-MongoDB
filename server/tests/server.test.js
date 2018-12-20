@@ -7,8 +7,12 @@ const { Todo } = require("./../models/todo.js");
 let i;
 
 beforeEach((done) => {
-    Todo.remove({}).then(() => done());
-   // Todo.find().count().then(() =>done());
+    //Todo.remove({}).then(() => done());
+    Todo.count().then((count) => {
+        i = count
+        console.log(` count is : ${i}`)
+    })
+        .then(() => done());
 
 });
 
@@ -16,7 +20,7 @@ describe("POST /todos", () => {
 
     it("should create a new todo", (done) => {
 
-    let text = "Test todo text";
+    let text = "Test todo text mm1";
 
     request(app)
       .post('/todos')
@@ -30,8 +34,8 @@ describe("POST /todos", () => {
           return done(err);
         }
         Todo.find().then((todos) => {
-            expect(todos.length).toBe(1);
-            expect(todos[0].text).toBe(text);
+            expect(todos.length).toBe(i+1);
+            expect(todos[i].text).toBe(text);
             done();
           })
           .catch((e) => done(e));
