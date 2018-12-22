@@ -6,6 +6,13 @@ const { app } = require("./../server.js");
 const { Todo } = require("./../models/todo.js");
 let i;
 
+
+const todos = [{
+    text: 'First todo'
+}, {
+    text: 'Second todo'
+    }]
+
 beforeEach(done => {
   //Todo.remove({}).then(() => done());
   Todo.count()
@@ -18,11 +25,12 @@ beforeEach(done => {
 
 describe("POST /todos", () => {
   it("should create a new todo", done => {
-    let text = "Wash everything";
+      let text = "Wash dishes and do tables";
+      let completed = true
 
     request(app)
       .post("/todos")
-      .send({ text })
+      .send({ text, completed })
       .expect(200)
       .expect(res => {
         expect(res.body.text).toBe(text);
@@ -31,10 +39,10 @@ describe("POST /todos", () => {
         if (err) {
           return done(err);
         }
-        Todo.find()
+        Todo.find({text})
           .then(todos => {
-            expect(todos.length).toBe(i + 1);
-            expect(todos[i].text).toBe(text);
+            expect(todos.length).toBe(1);
+            expect(todos[0].text).toBe(text);
             done();
           })
           .catch(e => done(e));
@@ -62,6 +70,19 @@ describe("POST /todos", () => {
       });
   });
 });
+
+describe('GET /todos', () => {
+    it('should get all todos', (done) => {
+        request(app)
+            .get('/todos')
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.todos.length).toBe(i);
+                 
+            })
+            .end(done);
+    })
+})
 
 // Todo.find().count().then(
 //     count => {
