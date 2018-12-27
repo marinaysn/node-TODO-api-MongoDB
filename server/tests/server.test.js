@@ -25,7 +25,7 @@ beforeEach(done => {
 
 describe("POST /todos", () => {
   it("should create a new todo", done => {
-      let text = "Wash dishes and do tables";
+      let text = "Update the list";
       let completed = true
 
     request(app)
