@@ -8,7 +8,8 @@ const { Todo } = require("./../server/models/todo");
 let id = '5c254c076a26881e743c3fef';
 
 Todo.find({
-    _id: id
+    _id: id,
+    completed: false
 }).then((todos) => {
     console.log('Todos', todos)
 });
@@ -20,4 +21,7 @@ Todo.findOne({
 });
 
 
+Todo.findById(id).then((todo) => {
+    console.log('Todo: ', todo)
+});
 
