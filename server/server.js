@@ -48,21 +48,20 @@ app.get("/todos/:id", (req, res) => {
   let id = req.params.id;
   // res.send(req.params);
 
-  if (!ObjectId.isValid) {
+  if (!ObjectId.isValid(id)) {
     //res.status(400).send(res)
     res.status(400).send(`User Id ${id} is not valid`);
   } else {
 
     Todo.findById(id).then(
-      todo => {
+      (todo) => {
+
+        console.log(todo);
         if (!todo) {
-          return res.status(400).send(`User Id ${id} is not found`);
+          return res.status(401).send(`User Id ${id} is not found`);
         }
         res.send({
-          text: todo.text,
-          completed: todo.completed,
-          completedAt: todo.completedAt,
-          id: todo.id
+          todo
         });
       }
     ).catch((e) => res.status(404).send(e));
