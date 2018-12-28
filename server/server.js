@@ -55,10 +55,8 @@ app.get("/todos/:id", (req, res) => {
 
     Todo.findById(id).then(
       (todo) => {
-
-        console.log(todo);
         if (!todo) {
-          return res.status(401).send(`User Id ${id} is not found`);
+          return res.status(404).send(`User Id ${id} is not found`);
         }
         res.send({
           todo

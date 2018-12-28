@@ -13,6 +13,10 @@ const todos = [
     text: "Visit dentist at noon"
   },
   {
+    _id: '5c265d0d1df2354b986869e2',
+    text: "Cahnge the oil in the car"
+  },
+  {
     _id: new ObjectId(),
     text: "Second todo"
   }
@@ -98,6 +102,25 @@ describe("GET /todos/:id", () => {
       })
       .end(done);
   });
+
+  it('should return 400 if todo is not valid', (done) => {
+
+    let newId = new ObjectId();
+    request(app)
+      .get(`/todos/${newId}11`)
+      .expect(400)
+    .end(done)
+  });
+
+  it('should return 404 if todo is not found', (done) => {
+
+    let newId = new ObjectId();
+    request(app)
+      .get(`/todos/${newId}`)
+      .expect(404)
+    .end(done)
+  });
+
 });
 
 
