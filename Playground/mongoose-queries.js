@@ -44,7 +44,8 @@ else {
         if (!user) {
             return console.log(`User with Id ${u_id} is not found`)
         }
-        console.log(`User with Id ${u_id} : `, user)
+       // console.log(`User with Id ${u_id} : `, user)
+        console.log(JSON.stringify(user, undefined,2))
     }).catch((e) => {
         console.log(e);
     })
