@@ -8,7 +8,6 @@ const { mongoose } = require("./db/mongoose.js");
 const { Todo } = require("./models/todo");
 const { Users } = require("./models/users");
 
-
 const app = express();
 
 const port = process.env.PORT || 3000;
@@ -56,19 +55,42 @@ app.get("/todos/:id", (req, res) => {
     //res.status(400).send(res)
     res.status(400).send(`User Id ${id} is not valid`);
   } else {
-
-    Todo.findById(id).then(
-      (todo) => {
+    Todo.findById(id)
+      .then(todo => {
         if (!todo) {
           return res.status(404).send(`User Id ${id} is not found`);
         }
         res.send({
           todo
         });
-      }
-    ).catch((e) => res.status(404).send(e));
+      })
+      .catch(e => res.status(404).send(e));
   }
+});
 
+app.delete("/todos/:id", (req, res) => {
+  //get id
+  // will try for '5c1b3e42c11b522714bad184';
+
+  let id = req.params.id;
+
+  //validate
+  if (!ObjectId.isValid) {
+    res.status(400).send(`id -  ${id} - is not valid`);
+  } else {
+    //remove todo by id
+    Todo.findByIdAndDelete(id)
+      .then(todo => {
+        //if todo cannot be found
+        if (!todo) {
+          return res.status(400).send(`id -  ${id} - cannot be found`);
+        }
+        res.status(200).send({ todo });
+      })
+      .catch(e => {
+        res.status(404).send(e);
+      }); //error - 400
+  }
 });
 
 app.listen(port, () => {

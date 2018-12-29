@@ -9,11 +9,11 @@ let i;
 
 const todos = [
   {
-    _id: '5c1c74a04591e107f04fade1',
+    _id: "5c1c74a04591e107f04fade1",
     text: "Visit dentist at noon"
   },
   {
-    _id: '5c265d0d1df2354b986869e2',
+    _id: "5c265d0d1df2354b986869e2",
     text: "Cahnge the oil in the car"
   },
   {
@@ -27,7 +27,7 @@ beforeEach(done => {
   Todo.count()
     .then(count => {
       i = count;
-     // console.log(` count is : ${i}`);
+      // console.log(` count is : ${i}`);
     })
     .then(() => done());
 });
@@ -93,34 +93,29 @@ describe("GET /todos", () => {
 });
 
 describe("GET /todos/:id", () => {
-  it("should return valid info for valid id", (done) => {
+  it("should return valid info for valid id", done => {
     request(app)
       .get(`/todos/${todos[0]._id}`)
       .expect(200)
-      .expect((res) => {
+      .expect(res => {
         expect(res.body.todo.text).toBe(todos[0].text);
       })
       .end(done);
   });
 
-  it('should return 400 if todo is not valid', (done) => {
-
+  it("should return 400 if todo is not valid", done => {
     let newId = new ObjectId();
     request(app)
       .get(`/todos/${newId}11`)
       .expect(400)
-    .end(done)
+      .end(done);
   });
 
-  it('should return 404 if todo is not found', (done) => {
-
+  it("should return 404 if todo is not found", done => {
     let newId = new ObjectId();
     request(app)
       .get(`/todos/${newId}`)
       .expect(404)
-    .end(done)
+      .end(done);
   });
-
 });
-
-
