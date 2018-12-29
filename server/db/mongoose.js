@@ -8,6 +8,10 @@ mongoose.Promise = global.Promise;
 // };
 // mongoose.connect(process.env.POST ? db.mlab : db.localhost, { useNewUrlParser: true })
 
+//or
+//run on command line with valid credentials
+//heroku config: set MONGODB_URI = mongodb://<dbuser>:<dbpassword>@ds145304.mlab.com:45304/todoapp
+
 mongoose.connect( process.env.MONGODB_URI ||
   "mongodb://127.0.0.1:27017/TodoMApp",
   { useNewUrlParser: true }
