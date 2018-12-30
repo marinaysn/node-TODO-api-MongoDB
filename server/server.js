@@ -2,6 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { ObjectId } = require("mongodb");
+const _ = require("lodash");
 
 //local imports
 const { mongoose } = require("./db/mongoose.js");
@@ -92,6 +93,17 @@ app.delete("/todos/:id", (req, res) => {
         res.status(400).send(e);
       }); //error - 400
   }
+});
+
+app.patch('/todos/:id', (req, res) => {
+  let id = req.params.id;
+  let body = _.pick(req.body, ['text', 'completed']);
+
+  if (!ObjectId.isValid) {
+    return res.status(400).send(`id -  ${id} - is not valid`);
+  } 
+  
+  
 });
 
 app.listen(port, () => {
