@@ -84,12 +84,12 @@ app.delete("/todos/:id", (req, res) => {
       .then(todo => {
         //if todo cannot be found
         if (!todo) {
-          return res.status(400).send(`id -  ${id} - cannot be found`);
+          return res.status(406).send(`id -  ${id} - cannot be found`);
         }
         res.status(200).send({ todo });
       })
       .catch(e => {
-        res.status(404).send(e);
+        res.status(400).send(e);
       }); //error - 400
   }
 });

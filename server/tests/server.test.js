@@ -9,12 +9,12 @@ let i;
 
 const todos = [
   {
-    _id: "5c1c74a04591e107f04fade1",
-    text: "Visit dentist at noon"
+    _id: "5c283e45db80410820d33336",
+    text: "Visit dentist at 11"
   },
   {
-    _id: "5c265d0d1df2354b986869e2",
-    text: "Cahnge the oil in the car"
+    _id: "5c265bffcee9094a90868c10",
+    text: "Update the list for Danny"
   },
   {
     _id: new ObjectId(),
@@ -34,7 +34,7 @@ beforeEach(done => {
 
 describe("POST /todos", () => {
   it("should create a new todo", done => {
-    let text = "Cahnge the oil in the car";
+    let text = "Visit dentist at 12";
     let completed = false;
 
     request(app)
@@ -95,10 +95,10 @@ describe("GET /todos", () => {
 describe("GET /todos/:id", () => {
   it("should return valid info for valid id", done => {
     request(app)
-      .get(`/todos/${todos[0]._id}`)
+      .get(`/todos/${todos[1]._id}`)
       .expect(200)
       .expect(res => {
-        expect(res.body.todo.text).toBe(todos[0].text);
+        expect(res.body.todo.text).toBe(todos[1].text);
       })
       .end(done);
   });
@@ -116,6 +116,49 @@ describe("GET /todos/:id", () => {
     request(app)
       .get(`/todos/${newId}`)
       .expect(404)
+      .end(done);
+  });
+});
+
+describe("DELETE /todos/:id", () => {
+  it("should delete todo by given id", done => {
+    let deletedId = todos[0]._id;
+
+    request(app)
+      .delete(`/todos/${deletedId}`)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo._id).toBe(deletedId);
+      })
+      // .end (done);
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        Todo.findById(deletedId)
+          .then((todo) => {
+            //expect(todo).toNotExist();
+            expect(todo).not.toBeTruthy()
+            done();
+          })
+          .catch(e => done(e));
+      });
+  });
+
+  it("should return 406 if todo not found", done => {
+    let newId = new ObjectId();
+    request(app)
+      .delete(`/todos/${newId}`)
+      .expect(406)
+      .end(done);
+  });
+
+  it("should return 400 if todo not valid", done => {
+    let newId = new ObjectId();
+    request(app)
+      .delete(`/todos/${newId}11`)
+      .expect(400)
       .end(done);
   });
 });
