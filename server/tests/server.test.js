@@ -177,6 +177,7 @@ describe("DELETE /todos/:id", () => {
   describe("PATCH / todo/:id", () => {
     it("should update todo by given id with completed true", done => {
       let updatedId = todos[2]._id;
+       let text = "Visit dentist today"
 
       request(app)
         .patch(`/todos/${updatedId}`)
@@ -184,6 +185,9 @@ describe("DELETE /todos/:id", () => {
         .expect(200)
         .expect(res => {
           expect(res.body.todo._id).toBe(updatedId);
+          expect(res.body.todo.text).toBe(text);
+          expect(res.body.todo.completed).toBe(true);
+          expect( typeof res.body.todo.completedAt).toBe('number');
         })
         //.end(done)
         .end((err, res) => {
