@@ -13,7 +13,7 @@ mongoose.Promise = global.Promise;
 //heroku config: set MONGODB_URI = mongodb://<dbuser>:<dbpassword>@ds145304.mlab.com:45304/todoapp
 
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/TodoMApp",
+  process.env.MONGODB_URI,
   { useNewUrlParser: true }
 );
 

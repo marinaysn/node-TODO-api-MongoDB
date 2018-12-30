@@ -1,3 +1,5 @@
+require('./config/config');
+
 //library imports
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -11,7 +13,7 @@ const { Users } = require("./models/users");
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(bodyParser.json()); // middlewere
 
