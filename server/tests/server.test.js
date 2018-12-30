@@ -9,12 +9,24 @@ let i;
 
 const todos = [
   {
-    _id: "5c283e45db80410820d33336",
-    text: "Visit dentist at 11"
+    _id: "5c283e6a93265b20a45bbed1",
+    text: "Visit dentist at 12"
   },
   {
     _id: "5c265bffcee9094a90868c10",
     text: "Update the list for Danny"
+  },
+  {
+    _id: "5c1b3f3f7768893e1025a319",
+    text: "Visit dentist today",
+    completed: true,
+    completedAt: 333
+  },
+  {
+    _id: "5c1c77b968289803b0418234",
+    text: "Wash dishes please",
+    completed: false,
+    completedAt: null
   },
   {
     _id: new ObjectId(),
@@ -34,7 +46,7 @@ beforeEach(done => {
 
 describe("POST /todos", () => {
   it("should create a new todo", done => {
-    let text = "Visit dentist at 12";
+    let text = "Visit dentist at 11";
     let completed = false;
 
     request(app)
@@ -71,8 +83,8 @@ describe("POST /todos", () => {
         Todo.find()
           .then(todos => {
             expect(todos.length).toBe(i);
-            console.log(` count is : ${i}`);
-            console.log(` tl is : ${todos.length}`);
+            // console.log(` count is : ${i}`);
+            // console.log(` tl is : ${todos.length}`);
             done();
           })
           .catch(e => done(e));
@@ -137,9 +149,9 @@ describe("DELETE /todos/:id", () => {
         }
 
         Todo.findById(deletedId)
-          .then((todo) => {
+          .then(todo => {
             //expect(todo).toNotExist();
-            expect(todo).not.toBeTruthy()
+            expect(todo).not.toBeTruthy();
             done();
           })
           .catch(e => done(e));
@@ -160,5 +172,79 @@ describe("DELETE /todos/:id", () => {
       .delete(`/todos/${newId}11`)
       .expect(400)
       .end(done);
+  });
+
+  describe("PATCH / todo/:id", () => {
+    it("should update todo by given id with completed true", done => {
+      let updatedId = todos[2]._id;
+
+      request(app)
+        .patch(`/todos/${updatedId}`)
+        .send({ text: "Visit dentist today", completed: true })
+        .expect(200)
+        .expect(res => {
+          expect(res.body.todo._id).toBe(updatedId);
+        })
+        //.end(done)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+
+          Todo.findById(updatedId)
+            .then(todo => {
+              expect(todos[2].text).toBe(res.body.todo.text);
+              expect(todos[2].completed).toBe(res.body.todo.completed);
+              expect( typeof res.body.todo.completedAt).toBe('number');
+              done();
+            })
+            .catch(e => done(e));
+        });
+    });
+
+
+    it("should return 404 if id of updated todo is not found", done => {
+      let newId = new ObjectId();
+      request(app)
+        .patch(`/todos/${newId}`)
+        .expect(404)
+        .end(done);
+    });
+
+    it("should return 400 if id of updated todo is not valid", done => {
+      let newId = new ObjectId();
+      request(app)
+        .patch(`/todos/${newId}11`)
+        .expect(400)
+        .end(done);
+    });
+
+    it("should update todo by given id with completed false", done => {
+      let updatedId = todos[3]._id;
+
+      request(app)
+        .patch(`/todos/${updatedId}`)
+        .send({ text: "Wash dishes please", completed: false })
+        .expect(200)
+        .expect(res => {
+          expect(res.body.todo._id).toBe(updatedId);
+        })
+        //.end(done)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+
+          Todo.findById(updatedId)
+            .then(todo => {
+              expect(todos[3].text).toBe(res.body.todo.text);
+              expect(todos[3].completed).toBe(res.body.todo.completed);
+              expect(res.body.todo.completedAt).toBe(null);
+              done();
+            })
+            .catch(e => done(e));
+        });
+    });
+
   });
 });
