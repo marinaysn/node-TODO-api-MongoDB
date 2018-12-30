@@ -69,7 +69,6 @@ app.get("/todos/:id", (req, res) => {
   }
 });
 
-
 app.delete("/todos/:id", (req, res) => {
   //get id
   // will try for '5c1b3e42c11b522714bad184';
@@ -95,15 +94,37 @@ app.delete("/todos/:id", (req, res) => {
   }
 });
 
-app.patch('/todos/:id', (req, res) => {
+app.patch("/todos/:id", (req, res) => {
   let id = req.params.id;
-  let body = _.pick(req.body, ['text', 'completed']);
+  let body = _.pick(req.body, ["text", "completed"]);
 
   if (!ObjectId.isValid) {
     return res.status(400).send(`id -  ${id} - is not valid`);
-  } 
-  
-  
+  }
+
+  if (_.isBoolean(body.completed) && body.completed) {
+    body.completedAt = new Date().getTime();
+  } else {
+    body.completed = false;
+    body.completedAt = null;
+  }
+
+  // Todo.findByIdAndUpdate(
+  //   id,
+  //   { $set: { completed: body.completed, completedAt: body.completedAt } },
+  //   { new: true }
+  // )
+  Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
+    .then(todo => {
+      //if todo cannot be found
+      if (!todo) {
+        return res.status(404).send(`id -  ${id} - cannot be found`);
+      }
+      res.status(200).send({ todo });
+    })
+    .catch(e => {
+      res.status(400).send(e);
+    });
 });
 
 app.listen(port, () => {
