@@ -1,5 +1,16 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
+// {
+//   emails: "",
+//     password: "myPass123",
+//     tokens: [
+//       {
+//         access: 'auth',
+//       token: 'dfdsfjkjdsf4534jkdjfdls'},
+      
+//       ]
+// }
 let User = mongoose.model("User", {
     name: {
       type: String,
@@ -9,7 +20,15 @@ let User = mongoose.model("User", {
       type: String,
       minlength: 6,
       require: true,
-      trim: true
+      trim: true,
+      unique: true,
+      validate: {
+        validator: (v) => {
+          //return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v);
+        return validator.isEmail(v);
+        },
+        message: props => `${props.value} is not a valid email address`
+      }
     },
     location: {
       type: String,
@@ -21,7 +40,23 @@ let User = mongoose.model("User", {
     },
     gender: {
       type: String
+  },
+  password: {
+    type: String,
+    require: true,
+    minlength: 20
+  },
+  
+  tokens: [{
+    access: {
+      type: string,
+      require: true
+    },
+    token: {
+      type: string,
+      require: true
     }
+  }]
 });
   
 
