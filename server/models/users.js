@@ -1,65 +1,54 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const validator = require("validator");
 
-// {
-//   emails: "",
-//     password: "myPass123",
-//     tokens: [
-//       {
-//         access: 'auth',
-//       token: 'dfdsfjkjdsf4534jkdjfdls'},
-      
-//       ]
-// }
 let User = mongoose.model("User", {
-    name: {
-      type: String,
-      require: true
-    },
-    email: {
-      type: String,
-      minlength: 6,
-      require: true,
-      trim: true,
-      unique: true,
-      validate: {
-        validator: (v) => {
-          //return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v);
+  name: {
+    type: String,
+    require: true
+  },
+  email: {
+    type: String,
+    minlength: 6,
+    require: true,
+    trim: true,
+    unique: true,
+    validate: {
+      validator: v => {
         return validator.isEmail(v);
-        },
-        message: props => `${props.value} is not a valid email address`
-      }
-    },
-    location: {
-      type: String,
-      default: "New York"
-    },
-    age: {
-      type: Number,
-      default: 15
-    },
-    gender: {
-      type: String
+      },
+      message: props => `${props.value} is not a valid email address`
+    }
+  },
+  location: {
+    type: String,
+    default: "New York"
+  },
+  age: {
+    type: Number,
+    default: 15
+  },
+  gender: {
+    type: String
   },
   password: {
     type: String,
     require: true,
-    minlength: 20
+    minlength: 6
   },
-  
-  tokens: [{
-    access: {
-      type: string,
-      require: true
-    },
-    token: {
-      type: string,
-      require: true
-    }
-  }]
-});
-  
 
+  tokens: [
+    {
+      access: {
+        type: String,
+        require: true
+      },
+      token: {
+        type: String,
+        require: true
+      }
+    }
+  ]
+});
 
 // let newUser = new User({
 //     name: 'Peppa L. Lange',
@@ -75,4 +64,4 @@ let User = mongoose.model("User", {
 //     console.log(`Unable to save user`, e);
 // })
 
-module.exports = { User }; 
+module.exports = { User };

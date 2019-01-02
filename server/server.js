@@ -1,4 +1,4 @@
-require('./config/config');
+require("./config/config");
 
 //library imports
 const express = require("express");
@@ -9,7 +9,7 @@ const _ = require("lodash");
 //local imports
 const { mongoose } = require("./db/mongoose.js");
 const { Todo } = require("./models/todo");
-const { Users } = require("./models/users");
+const { User } = require("./models/users");
 
 const app = express();
 
@@ -111,11 +111,6 @@ app.patch("/todos/:id", (req, res) => {
     body.completedAt = null;
   }
 
-  // Todo.findByIdAndUpdate(
-  //   id,
-  //   { $set: { completed: body.completed, completedAt: body.completedAt } },
-  //   { new: true }
-  // )
   Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
     .then(todo => {
       //if todo cannot be found
@@ -127,6 +122,37 @@ app.patch("/todos/:id", (req, res) => {
     .catch(e => {
       res.status(400).send(e);
     });
+});
+
+/********* USERS ********** */
+
+app.post("/users", (req, res) => {
+  let body = _.pick(req.body, [
+    "name",
+    "email",
+    "location",
+    "age",
+    "gender",
+    "password"
+  ]);
+
+  let user = new User({
+    name: body.name,
+    email: body.email,
+    location: body.location,
+    age: body.age,
+    gender: body.gender,
+    password: body.password
+  });
+
+  user.save().then(
+    doc => {
+      res.send(doc);
+    }).catch((e) => {
+        res.status(400).send(e);
+      }
+    
+  );
 });
 
 app.listen(port, () => {
