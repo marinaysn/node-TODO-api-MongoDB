@@ -5,6 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { ObjectId } = require("mongodb");
 const _ = require("lodash");
+const jwt = require("jsonwebtoken");
 
 //local imports
 const { mongoose } = require("./db/mongoose.js");
@@ -135,24 +136,32 @@ app.post("/users", (req, res) => {
     "gender",
     "password"
   ]);
+  let user = new User(body);
+  // //or another approach
+  // let user = new User({
+  //   name: body.name,
+  //   email: body.email,
+  //   location: body.location,
+  //   age: body.age,
+  //   gender: body.gender,
+  //   password: body.password
+  // });
 
-  let user = new User({
-    name: body.name,
-    email: body.email,
-    location: body.location,
-    age: body.age,
-    gender: body.gender,
-    password: body.password
-  });
+  // User.findByToken
+  // user.generateAuthToken
 
-  user.save().then(
-    doc => {
-      res.send(doc);
-    }).catch((e) => {
-        res.status(400).send(e);
-      }
-    
-  );
+  user
+    .save()
+    .then(() => {
+      //res.send(doc);
+      return user.generateAuthToken();
+    })
+    .then((token) => {
+      res.header('x-auth', token).send(user);
+    })
+    .catch(e => {
+      res.status(400).send(e);
+    });
 });
 
 app.listen(port, () => {

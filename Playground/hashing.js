@@ -10,7 +10,7 @@ let data = {
 };
 
 let token = jwt.sign(data, 'somesecretcode');
-
+// can encode in https://jwt.io/
 
 console.log(`${token}\n\n`);
 
@@ -19,15 +19,11 @@ let decodedResults = jwt.verify(token, 'somesecretcode')
 
 console.log('decodedResults', decodedResults);
 
-//data.name='marina'
-
 // let msg = 'I am user number 3';
 // let hash = SHA256(msg).toString();
 // console.log(`${msg} \n\n${hash}secret\n\n`);
 
-
-// let data = {
-    
+// let data = {   
 //     id : 4
 // };
 
@@ -38,8 +34,6 @@ console.log('decodedResults', decodedResults);
     
 // data.id = 5;
 // let = resultHash = SHA256(JSON.stringify(data) + "somesecret").toString();
-
-
 
 // if (resultHash === token.hash) {
 //     console.log("Data was not changed")
