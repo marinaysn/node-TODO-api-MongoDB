@@ -150,14 +150,15 @@ app.post("/users", (req, res) => {
   // User.findByToken
   // user.generateAuthToken
 
+  // // generate auth token here for uers to login and save history
   user
     .save()
     .then(() => {
       //res.send(doc);
       return user.generateAuthToken();
     })
-    .then((token) => {
-      res.header('x-auth', token).send(user);
+    .then(token => {
+      res.header("x-auth", token).send(user);
     })
     .catch(e => {
       res.status(400).send(e);
