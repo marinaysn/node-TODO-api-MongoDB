@@ -72,6 +72,7 @@ app.get("/todos/:id", (req, res) => {
   }
 });
 
+// deleting 
 app.delete("/todos/:id", (req, res) => {
   //get id
   // will try for '5c1b3e42c11b522714bad184';
@@ -137,15 +138,6 @@ app.post("/users", (req, res) => {
     "password"
   ]);
   let user = new User(body);
-  // //or another approach
-  // let user = new User({
-  //   name: body.name,
-  //   email: body.email,
-  //   location: body.location,
-  //   age: body.age,
-  //   gender: body.gender,
-  //   password: body.password
-  // });
 
   // User.findByToken
   // user.generateAuthToken
