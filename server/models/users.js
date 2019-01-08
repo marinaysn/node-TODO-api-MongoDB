@@ -52,11 +52,18 @@ let UserSchema = new mongoose.Schema({
   ]
 });
 
-UserSchema.methods.toJSON = function () {
+UserSchema.methods.toJSON = function() {
   let user = this;
   let userObject = user.toObject();
 
-  return _.pick(userObject, ['_id', 'email', 'name', 'location', 'age', 'gender']);
+  return _.pick(userObject, [
+    "_id",
+    "email",
+    "name",
+    "location",
+    "age",
+    "gender"
+  ]);
 };
 
 UserSchema.methods.generateAuthToken = function() {
@@ -66,11 +73,28 @@ UserSchema.methods.generateAuthToken = function() {
     .sign({ _id: user._id, access }, "!someSecretCode88")
     .toString();
 
-  user.tokens.push({ access, token });
-  //user.tokens = user.tokens.concat([{ access, token }]);
+  //user.tokens.push({ access, token });
+  user.tokens = user.tokens.concat([{ access, token }]);
 
   return user.save().then(() => {
     return token;
+  });
+};
+
+UserSchema.statics.findByToken = function(token) {
+  let User = this;
+  let decoded;
+
+  try {
+    decoded = jwt.verify(token, "!someSecretCode88");
+  } catch (e) {
+    return Promise.reject();
+  }
+
+  return User.findOne({
+    _id: decoded._id,
+    "tokens.token": token,
+    "tokens.access": "auth"
   });
 };
 

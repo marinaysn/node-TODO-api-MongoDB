@@ -72,7 +72,7 @@ app.get("/todos/:id", (req, res) => {
   }
 });
 
-// deleting 
+// deleting
 app.delete("/todos/:id", (req, res) => {
   //get id
   // will try for '5c1b3e42c11b522714bad184';
@@ -155,6 +155,23 @@ app.post("/users", (req, res) => {
     .catch(e => {
       res.status(400).send(e);
     });
+});
+
+app.get("/users/me", (req, res) => {
+  let token = req.header("x-auth");
+
+  User.findByToken(token).then(user => {
+    if (!user) {
+      //return Promise.reject();
+    }
+
+    //   res.status(200).send(req.user);
+    // }).catch(e => {
+    //   res.status(403).send();
+    // })
+
+    res.send(user);
+  });
 });
 
 app.listen(port, () => {
