@@ -88,6 +88,9 @@ UserSchema.statics.findByToken = function(token) {
   try {
     decoded = jwt.verify(token, "!someSecretCode88");
   } catch (e) {
+    // return new Promise((resolve, reject) => {
+    //   reject();
+    // })
     return Promise.reject();
   }
 

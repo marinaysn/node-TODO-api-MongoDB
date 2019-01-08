@@ -11,6 +11,7 @@ const jwt = require("jsonwebtoken");
 const { mongoose } = require("./db/mongoose.js");
 const { Todo } = require("./models/todo");
 const { User } = require("./models/users");
+const { authenticate } = require("./middleware/authenticate");
 
 const app = express();
 
@@ -157,21 +158,8 @@ app.post("/users", (req, res) => {
     });
 });
 
-app.get("/users/me", (req, res) => {
-  let token = req.header("x-auth");
-
-  User.findByToken(token).then(user => {
-    if (!user) {
-      //return Promise.reject();
-    }
-
-    //   res.status(200).send(req.user);
-    // }).catch(e => {
-    //   res.status(403).send();
-    // })
-
-    res.send(user);
-  });
+app.get("/users/me", authenticate, (req, res) => {
+  res.send(req.user);
 });
 
 app.listen(port, () => {
