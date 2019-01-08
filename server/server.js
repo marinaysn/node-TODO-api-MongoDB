@@ -143,7 +143,7 @@ app.post("/users", (req, res) => {
   // User.findByToken
   // user.generateAuthToken
 
-  // // generate auth token here for uers to login and save history
+  // // generate auth token here for users to login and save history
   user
     .save()
     .then(() => {
