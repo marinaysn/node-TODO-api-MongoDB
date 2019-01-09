@@ -3,7 +3,7 @@ const {MongoClient, ObjectID} = require("mongodb"); //destructuring
 
 
 MongoClient.connect(
-    "mongodb://localhost:27017/testTodoApp",
+    "mongodb://127.0.0.1:27017/testTodoApp",
     { useNewUrlParser: true },
   (err, client) => {
     if (err) {

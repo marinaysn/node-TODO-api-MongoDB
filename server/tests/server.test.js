@@ -5,48 +5,21 @@ const { ObjectId } = require("mongodb");
 //locat imports
 const { app } = require("./../server.js");
 const { Todo } = require("./../models/todo.js");
-let i;
 
-const todos = [
-  {
-    _id: "5c283e6a93265b20a45bbed1",
-    text: "Visit dentist at 12"
-  },
-  {
-    _id: "5c265bffcee9094a90868c10",
-    text: "Update the list for Danny"
-  },
-  {
-    _id: "5c1b3f3f7768893e1025a319",
-    text: "Visit dentist today",
-    completed: true,
-    completedAt: 333
-  },
-  {
-    _id: "5c1c77b968289803b0418234",
-    text: "Wash dishes please",
-    completed: false,
-    completedAt: null
-  },
-  {
-    _id: new ObjectId(),
-    text: "Second todo"
-  }
-];
+const {  todos , populateTodos, users, populateUsers} = require("./seed/seed");
 
-beforeEach(done => {
-  //Todo.remove({}).then(() => done());
-  Todo.count()
-    .then(count => {
-      i = count;
-      // console.log(` count is : ${i}`);
-    })
-    .then(() => done());
-});
+beforeEach(populateUsers);
+
+beforeEach(populateTodos);
+
+
+//beforeEach(tCount);
+// console.log(` tCount is : ${tCount}`);
+// console.log(` tCount is : ${todos}`);
 
 describe("POST /todos", () => {
   it("should create a new todo", done => {
-    let text = "Visit dentist at 11";
+    let text = "Visit dentist at 19 and";
     let completed = false;
 
     request(app)
@@ -71,6 +44,9 @@ describe("POST /todos", () => {
   });
 
   it("Should not create todo with invalid data", done => {
+    // console.log(` todo is : ${tCount}`);
+    // console.log(` todo is : ${Todo.length}`);
+    // console.log(` tl is : ${todos.length}`);
     request(app)
       .post("/todos")
       .send({})
@@ -83,8 +59,8 @@ describe("POST /todos", () => {
         Todo.find()
           .then(todos => {
             expect(todos.length).toBe(i);
-            // console.log(` count is : ${i}`);
-            // console.log(` tl is : ${todos.length}`);
+            //  console.log(` count is : ${i}`);
+            //  console.log(` tl is : ${todos.length}`);
             done();
           })
           .catch(e => done(e));
@@ -98,6 +74,7 @@ describe("GET /todos", () => {
       .get("/todos")
       .expect(200)
       .expect(res => {
+        // console.log(` i is : ${i}`);
         expect(res.body.todos.length).toBe(i);
       })
       .end(done);
@@ -177,7 +154,7 @@ describe("DELETE /todos/:id", () => {
   describe("PATCH / todo/:id", () => {
     it("should update todo by given id with completed true", done => {
       let updatedId = todos[2]._id;
-       let text = "Visit dentist today"
+      let text = "Visit dentist today";
 
       request(app)
         .patch(`/todos/${updatedId}`)
@@ -187,7 +164,7 @@ describe("DELETE /todos/:id", () => {
           expect(res.body.todo._id).toBe(updatedId);
           expect(res.body.todo.text).toBe(text);
           expect(res.body.todo.completed).toBe(true);
-          expect( typeof res.body.todo.completedAt).toBe('number');
+          expect(typeof res.body.todo.completedAt).toBe("number");
         })
         //.end(done)
         .end((err, res) => {
@@ -199,13 +176,12 @@ describe("DELETE /todos/:id", () => {
             .then(todo => {
               expect(todos[2].text).toBe(res.body.todo.text);
               expect(todos[2].completed).toBe(res.body.todo.completed);
-              expect( typeof res.body.todo.completedAt).toBe('number');
+              expect(typeof res.body.todo.completedAt).toBe("number");
               done();
             })
             .catch(e => done(e));
         });
     });
-
 
     it("should return 404 if id of updated todo is not found", done => {
       let newId = new ObjectId();
@@ -249,6 +225,5 @@ describe("DELETE /todos/:id", () => {
             .catch(e => done(e));
         });
     });
-
   });
 });
