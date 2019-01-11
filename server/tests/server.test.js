@@ -4,7 +4,8 @@ const { ObjectId } = require("mongodb");
 
 //locat imports
 const { app } = require("./../server.js");
-const { Todo } = require("./../models/todo.js");
+const { Todo } = require("./../models/todo");
+const { User } = require("./../models/users");
 
 const { todos, populateTodos, users, populateUsers } = require("./seed/seed");
 
@@ -254,4 +255,72 @@ describe("GET /users/me", () => {
       })
       .end(done);
   });
+});
+
+describe('POST /user', (done) => {
+  it('should create a user', (done) => {
+    let email = 'example@example.com';
+    let password = '123mbn!';
+    let location = 'Chicago';
+    let age = 27;
+    let name = 'Alice Mayne Reed';
+    let gender = 'female';
+
+
+    request(app)
+      .post('/users')
+      .send({ location, age, name, gender, email, password })
+      .expect(200)
+      .expect((res) => {
+        expect(res.headers['x-auth']).toBeTruthy();
+        expect(res.body._id).toBeTruthy();
+        expect(res.body.email).toBe(email)
+        expect(res.body.name).toBe(name)
+      }).end((e) => {
+        if (e) {
+          return done(e);
+        }
+
+        User.findOne({ email }).then((user) => {
+          expect(user).toBeTruthy();
+          expect(user.password).not.toBe(password);
+          done();
+        }).catch(e => done(e));
+    })
+
+  });
+
+  it('should return validation errors if request invalid', (done) => {
+
+    let email = 'empl';
+    let password = '123mbn!';
+    let location = 'Chicago';
+    let age = 29;
+    let name = 'Allen Reese';
+    let gender = 'male';
+
+
+    request(app)
+      .post('/users')
+      .send({ location, age, name, gender, email, password })
+      .expect(400)
+      .end(done)
+  });
+
+  it('it should not create user if email in use', (done) => {
+    let email = users[0].email;
+    let password = '123mbn!';
+    let location = 'Chicago';
+    let age = 29;
+    let name = 'Allen Reese';
+    let gender = 'male';
+
+    request(app)
+    .post('/users')
+    .send({ location, age, name, gender, email, password })
+    .expect(400)
+    .end(done)
+  });
+
+
 });
