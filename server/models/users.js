@@ -122,6 +122,21 @@ UserSchema.pre("save", function(next) {
   }
 });
 
+UserSchema.statics.findByCredentials = function(email, password) {
+  let User = this;
+
+  return User.findOne({
+    email: "email"
+  }).then(user => {
+    if (!User) {
+      return Promise.reject();
+    }
+    return new Promise((resolve, reject) => {
+
+    });
+  }); 
+};
+
 let User = mongoose.model("User", UserSchema);
 
 module.exports = { User };
