@@ -324,3 +324,9 @@ describe('POST /user', (done) => {
 
 
 });
+
+describe('POST /users/login', () =>{
+  it('should login user and return auth token', (done)=>{
+
+  });
+});
