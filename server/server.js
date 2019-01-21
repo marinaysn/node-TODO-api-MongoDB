@@ -162,31 +162,25 @@ app.get("/users/me", authenticate, (req, res) => {
 //POST /users/login {email, password}
 
 app.post("/users/login", (req, res) => {
-  let body = _.pick(req.body, ["email", "password"]);
+  let body = _.pick(req.body, ['email', 'password']);
 
 
-  //res.send(body);
+  // User.findByCredentials(body.email, body.password).then((user) => {
+  //   res.send(user);
+  // }).catch((e) => {
+  //   res.status(400).send();
+  // })
 
-  User.findByCredentials(body.email, body.password).then((user) => {
 
-    res.send(user);
-
-  }).catch((e) => {
-    res.status(400).send();
-  })
-
-  
-
-  //res.send(body);
 
   User.findByCredentials(body.email, body.password)
     .then(user => {
-      //res.send(user);
-      user.generateAuthToken().then(token => {
+
+      user.generateAuthToken().then((token) => {
         res.header("x-auth", token).send(user);
       });
     })
-    .catch(e => {
+    .catch((e) => {
       res.status(407).send();
     });
 
