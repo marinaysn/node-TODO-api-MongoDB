@@ -31,7 +31,8 @@ const users = [
     name: "John",
     email: "john@toronto.ca",
     gender: "male",
-    password: "abc123"
+    password: "abc123",
+    
   }
 ];
 
