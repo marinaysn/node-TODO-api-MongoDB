@@ -16,7 +16,8 @@ const users = [
     name: "Jane",
     email: "jane@toronto.ca",
     gender: "female",
-    password: "123abc",
+    password: "123abc"
+    ,
     tokens: [
       {
         access: "auth",
