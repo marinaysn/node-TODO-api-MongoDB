@@ -12,7 +12,7 @@ const { todos, populateTodos, users, populateUsers } = require("./seed/seed");
 beforeEach(populateUsers);
 beforeEach(populateTodos);
 
-/*
+
 let i;
 i = 1;
 
@@ -24,6 +24,7 @@ describe("POST /todos", () => {
 
     request(app)
       .post("/todos")
+      .set('x-auth', users[0].tokens[0].token)
       .send({ text, completed })
       .expect(200)
       .expect(res => {
@@ -44,11 +45,10 @@ describe("POST /todos", () => {
   });
 
   it("Should not create todo with invalid data", done => {
-    // console.log(` todo is : ${tCount}`);
-    // console.log(` todo is : ${Todo.length}`);
-    // console.log(` tl is : ${todos.length}`);
+
     request(app)
       .post("/todos")
+      .set('x-auth', users[0].tokens[0].token)
       .send({})
       .expect(400)
 
@@ -58,10 +58,7 @@ describe("POST /todos", () => {
         }
         Todo.find()
           .then(todos => {
-            //expect(todos.length).toBe(i);
             expect(todos.length).toBe(todos.length);
-            //  console.log(` count is : ${i}`);
-            //  console.log(` tl is : ${todos.length}`);
             done();
           })
           .catch(e => done(e));
@@ -73,6 +70,7 @@ describe("GET /todos", () => {
   it("should get all todos", done => {
     request(app)
       .get("/todos")
+      .set('x-auth', users[0].tokens[0].token)
       .expect(200)
       .expect(res => {
        // expect(res.body.todos.length).toBe(i);
@@ -82,6 +80,7 @@ describe("GET /todos", () => {
   });
 });
 
+/*
 describe("GET /todos/:id", () => {
   it("should return valid info for valid id", done => {
     request(app)
