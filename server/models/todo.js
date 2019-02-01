@@ -17,7 +17,7 @@ let Todo = mongoose.model("Todo", {
         type: Number,
         default: null
     },
-    _created: {
+    _creator: {
       required: true,
       type: mongoose.Schema.Types.ObjectId
     }

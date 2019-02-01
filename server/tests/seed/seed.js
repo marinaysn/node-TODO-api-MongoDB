@@ -41,31 +41,31 @@ const todos = [
   {
     _id: "5c3571a995c5cc3aa0df2cd4",
     text: "Visit dentist at 18",
-    _created: obj._id
+    _creator: obj._id
   },
   {
     _id: "5c37fd21da4d624ce0fd550e",
     text: "Visit dentist at 21",
-    _created: obj._id
+    _creator: obj._id
   },
   {
     _id: "5c3592f4591e4743fc5f6609",
     text: "Visit dentist at 19 and",
     completed: true,
     completedAt: 333,
-    _created: obj2._id
+    _creator: obj2._id
   },
   {
     _id: "5c37fd21da4d624ce0fd550e",
     text: "Visit dentist at 21",
     completed: false,
     completedAt: null,
-    _created: obj2._id
+    _creator: obj2._id
   },
   {
     _id: new ObjectId(),
     text: "Second todo",
-    _created: obj._id
+    _creator: obj._id
   }
 ];
 
